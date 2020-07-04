@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Mall.iml" filepath="$PROJECT_DIR$/.idea/Mall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mall-common/mall-common.iml" filepath="$PROJECT_DIR$/mall-common/mall-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mall-manager/mall-manager.iml" filepath="$PROJECT_DIR$/mall-manager/mall-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mall-parent/mall-parent.iml" filepath="$PROJECT_DIR$/mall-parent/mall-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mall-portal/mall-portal.iml" filepath="$PROJECT_DIR$/mall-portal/mall-portal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mall-web/mall-web.iml" filepath="$PROJECT_DIR$/mall-web/mall-web.iml" />
+    </modules>
+  </component>
+</project>
