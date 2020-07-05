@@ -2,6 +2,7 @@ package com.zh.mall.manager.controller;
 
 import com.zh.mall.common.bean.AJAXResult;
 import com.zh.mall.common.bean.User;
+import com.zh.mall.common.util.MD5Util;
 import com.zh.mall.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,10 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/doAJAXLogin")
     public Object doAJAXLogin(User user, HttpSession session){
-        User dbUser = userService.queryLoginUser(user);
+
         AJAXResult result = new AJAXResult();
+        user.setPassword(MD5Util.digest(user.getPassword()));
+        User dbUser = userService.queryLoginUser(user);
 
         if(dbUser != null){
             result.setSuccess(true);

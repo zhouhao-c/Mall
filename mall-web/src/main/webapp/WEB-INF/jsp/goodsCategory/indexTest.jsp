@@ -1,4 +1,12 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: hao Zhou
+  Date: 2020/7/5
+  Time: 16:39
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10,18 +18,14 @@
 
     <link rel="stylesheet" href="${APP_PATH}/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="${APP_PATH}/static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${APP_PATH}/static/css/login.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/main.css">
     <style>
         .tree li {
             list-style-type: none;
             cursor:pointer;
         }
-        .tree-closed {
-            height : 40px;
-        }
-        .tree-expanded {
-            height : auto;
-        }
+        table tbody tr:nth-child(odd){background:#F4F4F4;}
+        table tbody td:nth-child(even){color:#C00;}
     </style>
 </head>
 
@@ -30,7 +34,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="#">电商平台 - 控制面板</a></div>
+            <div><a class="navbar-brand" style="font-size:32px;" href="#">电商平台 - 商品分类</a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -44,7 +48,7 @@
                 </li>
             </ul>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="查询">
+                <input type="text" class="form-control" placeholder="Search...">
             </form>
         </div>
     </div>
@@ -86,9 +90,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="list-group-item tree-closed">
+                    <li class="list-group-item">
                         <span><i class="glyphicon glyphicon-th-large"></i> 业务管理 <span class="badge" style="float:right">7</span></span>
-                        <ul style="margin-top:10px;display:none;">
+                        <ul style="margin-top:10px;">
                             <li style="height:30px;">
                                 <a href="cert.html"><i class="glyphicon glyphicon-picture"></i> 资质维护</a>
                             </li>
@@ -105,7 +109,7 @@
                                 <a href="message.html"><i class="glyphicon glyphicon-comment"></i> 消息模板</a>
                             </li>
                             <li style="height:30px;">
-                                <a href="goodsCategory/index"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
+                                <a href="project_type.html" style="color:red;"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
                             </li>
                             <li style="height:30px;">
                                 <a href="tag.html"><i class="glyphicon glyphicon-tags"></i> 商品标签</a>
@@ -119,33 +123,79 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">控制面板</h1>
-
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
                 </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
+                <div class="panel-body">
+                    <form class="form-inline" role="form" style="float:left;">
+                        <div class="form-group has-feedback">
+                            <div class="input-group">
+                                <div class="input-group-addon">查询条件</div>
+                                <input class="form-control has-success" type="text" placeholder="请输入查询条件">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
+                    </form>
+                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
+                    <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='form.html'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+                    <br>
+                    <hr style="clear:both;">
+                    <div class="table-responsive">
+                        <table class="table  table-bordered">
+                            <thead>
+                            <tr >
+                                <th width="30">#</th>
+                                <th width="30"><input type="checkbox"></th>
+                                <th width="300">分类名称</th>
+                                <th>简介</th>
+                                <th width="100">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${gcs}" var="gc" varStatus="status">
+                                <tr>
+                                    <td>${status.count}</td>
+                                    <td><input type="checkbox"></td>
+                                    <td>${gc.name}</td>
+                                    <td>${gc.remark}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
+                                        <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                            <tfoot>
+                            <tr >
+                                <td colspan="6" align="center">
+                                    <ul class="pagination">
+                                        <c:if test="${pageno > 1}">
+                                            <li><a href="#" onclick="changePageno(${pageno-1})">上一页</a></li>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${totalno}" varStatus="status">
+                                            <c:if test="${pageno == status.count}">
+                                                <li class="active"><a href="#">${status.count}</a></li>
+                                            </c:if>
+                                            <c:if test="${pageno != status.count}">
+                                                <li><a href="#" onclick="changePageno(${status.count})">${status.count}</a></li>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${pageno < totalno}">
+                                            <li><a href="#" onclick="changePageno(${pageno+1})">下一页</a></li>
+                                        </c:if>
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="${APP_PATH}/static/jquery/jquery-2.1.1.min.js"></script>
 <script src="${APP_PATH}/static/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/static/script/docs.min.js"></script>
@@ -162,6 +212,9 @@
             }
         });
     });
+    function changePageno(pageno) {
+        window.location.href = "${APP_PATH}/goodsCategory/index?pageno=" + pageno;
+    }
 </script>
 </body>
 </html>

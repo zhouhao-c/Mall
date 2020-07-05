@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: hao Zhou
-  Date: 2020/6/27
-  Time: 19:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -15,9 +8,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../static/css/login.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/login.css">
     <style>
         .tree li {
             list-style-type: none;
@@ -42,7 +35,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li style="padding-top:8px;">
-                    <%@include file="../../WEB-INF/jsp/common/userinfo.jsp"%>
+                    <%@include file="/WEB-INF/jsp/common/userinfo.jsp"%>
                 </li>
                 <li style="margin-left:10px;padding-top:8px;">
                     <button type="button" class="btn btn-default btn-danger">
@@ -56,7 +49,7 @@
         </div>
     </div>
 </nav>
-<br><br><br>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
@@ -112,7 +105,7 @@
                                 <a href="message.html"><i class="glyphicon glyphicon-comment"></i> 消息模板</a>
                             </li>
                             <li style="height:30px;">
-                                <a href="project_type.html"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
+                                <a href="goodsCategory/index"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
                             </li>
                             <li style="height:30px;">
                                 <a href="tag.html"><i class="glyphicon glyphicon-tags"></i> 商品标签</a>
@@ -125,7 +118,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">控制面板</h1>
 
             <div class="row placeholders">
@@ -153,9 +146,9 @@
         </div>
     </div>
 </div>
-<script src="../../static/jquery/jquery-2.1.1.min.js"></script>
-<script src="../../static/bootstrap/js/bootstrap.min.js"></script>
-<script src="../../static/script/docs.min.js"></script>
+<script src="${APP_PATH}/static/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="${APP_PATH}/static/script/docs.min.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function(){
