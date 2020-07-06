@@ -3,6 +3,7 @@ package com.zh.mall.manager.controller;
 import com.zh.mall.common.bean.AJAXResult;
 import com.zh.mall.common.bean.GoodsCategory;
 import com.zh.mall.common.bean.Page;
+import com.zh.mall.common.util.StringUtil;
 import com.zh.mall.manager.service.GoodsCategoryService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,26 @@ public class GoodsCategoryController {
      */
     @ResponseBody
     @RequestMapping("/pageQuery")
-    public Object pageQuery(Integer pageno,Integer pagesize){
+    public Object pageQuery(Integer pageno,Integer pagesize,String queryText){
         AJAXResult ajaxResult = new AJAXResult();
 
         try {
             Map<String,Object> paramMap = new HashMap<>();
             paramMap.put("start",(pageno-1)*pagesize);
             paramMap.put("size",pagesize);
+            //特殊字符转义
+            if (!StringUtil.isEmpty(queryText)){
+                if (queryText.contains("\\")){
+                    queryText = queryText.replaceAll("\\\\","\\\\\\\\");
+                }
+                if (queryText.contains("%")){
+                    queryText = queryText.replaceAll("%","\\\\%");
+                }
+                if (queryText.contains("_")){
+                    queryText = queryText.replaceAll("_","\\\\_");
+                }
+            }
+            paramMap.put("queryText",queryText);
 
             int totalsize = goodsCategoryService.queryPageCount(paramMap);
             int totalno = 0;
@@ -75,6 +89,7 @@ public class GoodsCategoryController {
     public String index(){
         return "goodsCategory/index";
     }
+
     /**
      * 同步分页
      * @param pageno

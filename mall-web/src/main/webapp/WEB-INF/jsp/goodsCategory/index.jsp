@@ -131,10 +131,10 @@
                         <div class="form-group has-feedback">
                             <div class="input-group">
                                 <div class="input-group-addon">查询条件</div>
-                                <input class="form-control has-success" type="text" placeholder="请输入查询条件">
+                                <input class="form-control has-success" type="text" id="queryText" placeholder="请输入查询条件">
                             </div>
                         </div>
-                        <button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
+                        <button type="button" class="btn btn-warning" id="queryBtn"><i class="glyphicon glyphicon-search"></i> 查询</button>
                     </form>
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
                     <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='form.html'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
@@ -174,6 +174,7 @@
 <script src="${APP_PATH}/static/script/docs.min.js"></script>
 <script src="${APP_PATH}/static/layer/layer.js"></script>
 <script type="text/javascript">
+    var likeflg = false;
     $(function () {
         $(".list-group-item").click(function(){
             if ( $(this).find("ul") ) {
@@ -186,11 +187,22 @@
             }
         });
         pageQuery(1);
+
+        $("#queryBtn").click(function(){
+            var queryText = $("#queryText").val();
+            if ( queryText !== "" ) {
+                likeflg = true;
+            }
+            pageQuery(1);
+        });
     });
 
     function pageQuery(pageno) {
-        var jsonData = {"pageno":pageno, "pagesize":2};
+        var jsonData = {"pageno":pageno, "pagesize":10};
         var index = 0;
+        if (likeflg === true){
+            jsonData.queryText = $("#queryText").val();
+        }
 
         $.ajax({
             type : "POST",
