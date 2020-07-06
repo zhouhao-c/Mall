@@ -24,4 +24,14 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     public int queryPageCount(Map<String, Object> paramMap) {
         return goodsCategoryDao.queryPageCount(paramMap);
     }
+
+    @Override
+    public void insertGoodsCategory(GoodsCategory gc) {
+        goodsCategoryDao.insertGoodsCategory(gc);
+    }
+
+    @Override
+    public GoodsCategory queryById(Integer id) {
+        return goodsCategoryDao.queryById(id);
+    }
 }

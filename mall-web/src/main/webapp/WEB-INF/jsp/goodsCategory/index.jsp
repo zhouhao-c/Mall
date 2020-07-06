@@ -137,7 +137,7 @@
                         <button type="button" class="btn btn-warning" id="queryBtn"><i class="glyphicon glyphicon-search"></i> 查询</button>
                     </form>
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
-                    <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='form.html'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+                    <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='${APP_PATH}/goodsCategory/add'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
                     <br>
                     <hr style="clear:both;">
                     <div class="table-responsive">
@@ -148,6 +148,7 @@
                                 <th width="30"><input type="checkbox"></th>
                                 <th width="300">分类名称</th>
                                 <th>简介</th>
+                                <th>排序号</th>
                                 <th width="100">操作</th>
                             </tr>
                             </thead>
@@ -225,8 +226,9 @@
                         content += '  <td><input type="checkbox"></td> ';
                         content += '  <td>'+data.name+'</td>              ';
                         content += '  <td>'+data.remark+'</td>            ';
+                        content += '  <td>'+data.orderid+'</td>            ';
                         content += '  <td>                             ';
-                        content += '      <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content += '	  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content += '  </td>';
                         content += '</tr>';

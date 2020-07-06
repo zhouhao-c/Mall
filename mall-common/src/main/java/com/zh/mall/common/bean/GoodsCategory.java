@@ -12,4 +12,5 @@ public class GoodsCategory {
     private String name;
     private String remark;
     private Integer orderid;
+    private String createtime;
 }

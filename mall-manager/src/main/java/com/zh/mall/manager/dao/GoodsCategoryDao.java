@@ -10,4 +10,8 @@ public interface GoodsCategoryDao {
     List<GoodsCategory> queryPageData(Map<String, Object> paramMap);
 
     int queryPageCount(Map<String, Object> paramMap);
+
+    void insertGoodsCategory(GoodsCategory gc);
+
+    GoodsCategory queryById(Integer id);
 }
