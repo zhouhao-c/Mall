@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -136,7 +137,7 @@
                         </div>
                         <button type="button" class="btn btn-warning" id="queryBtn"><i class="glyphicon glyphicon-search"></i> 查询</button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
+                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;" onclick="deleteDatas()" ><i class=" glyphicon glyphicon-remove"></i> 删除</button>
                     <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='${APP_PATH}/goodsCategory/add'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
                     <br>
                     <hr style="clear:both;">
@@ -145,7 +146,7 @@
                             <thead>
                             <tr >
                                 <th width="30">#</th>
-                                <th width="30"><input type="checkbox"></th>
+                                <th width="30"><input type="checkbox" id="allSelBox"></th>
                                 <th width="300">分类名称</th>
                                 <th>简介</th>
                                 <th>排序号</th>
@@ -187,7 +188,22 @@
                 }
             }
         });
+
+        $("#allSelBox").click(function () {
+            var that = this;
+            var boxes = $("#dataBody :checkbox");
+            $.each(boxes,function (i,box) {
+                box.checked = that.checked;
+            });
+        });
+        //地址栏获取参数param
+        //后台代码先执行，浏览器解析不到
+        <c:if test="${not empty param.pageno}">
+        pageQuery(${param.pageno});
+        </c:if>
+        <c:if test="${empty param.pageno}">
         pageQuery(1);
+        </c:if>
 
         $("#queryBtn").click(function(){
             var queryText = $("#queryText").val();
@@ -199,7 +215,7 @@
     });
 
     function pageQuery(pageno) {
-        var jsonData = {"pageno":pageno, "pagesize":10};
+        var jsonData = {"pageno":pageno, "pagesize":3};
         var index = 0;
         if (likeflg === true){
             jsonData.queryText = $("#queryText").val();
@@ -223,13 +239,13 @@
                         var data = datas[i];
                         content += '<tr>';
                         content += '  <td>'+(i+1)+'</td>         ';
-                        content += '  <td><input type="checkbox"></td> ';
+                        content += '  <td><input type="checkbox" value="'+data.id+'"></td> ';
                         content += '  <td>'+data.name+'</td>              ';
                         content += '  <td>'+data.remark+'</td>            ';
                         content += '  <td>'+data.orderid+'</td>            ';
                         content += '  <td>                             ';
-                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content += '	  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?pageno='+pageno+'&id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content += '	  <button type="button" onclick="deleteGoodsCategory('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content += '  </td>';
                         content += '</tr>';
                     }
@@ -260,10 +276,89 @@
 
         });
     }
+    
+    function deleteGoodsCategory(id,name) {
+        layer.confirm("删除商品分类信息【"+name+"】，是否继续？",  {icon: 3, title:'提示'}, function(cindex){
+            // 确定
+            var index = 0;
+            $.ajax({
+                type : "POST",
+                url  : "${APP_PATH}/goodsCategory/delete",
+                data : {
+                    "id" : id
+                },
+                beforeSend : function() {
+                    index = layer.load(2, {time: 10*1000});
+                },
+                success : function(result) {
+                    layer.close(index);
+                    if ( result.success ) {
+                        layer.msg("商品分类信息删除成功", {time:2000, icon:6}, function(){
+                            pageQuery(1);
+                        });
+                    } else {
+                        layer.msg("商品分类信息删除失败", {time:2000, icon:5, shift:6}, function(){
+                        });
+                    }
+                }
+            });
+            layer.close(cindex);
+        }, function(cindex){
+            // 取消
+            layer.close(cindex);
+        });
+    }
     <%--function changePageno(pageno) {--%>
     <%--    window.location.href = "${APP_PATH}/goodsCategory/index?pageno=" + pageno;--%>
     <%--}--%>
 
+    function deleteDatas() {
+        var boxes = $("#dataBody :checked");
+        if(boxes.length === 0){
+            layer.msg("请选择需要删除商品分类信息", {time:2000, icon:5, shift:6}, function(){
+            });
+        }else {
+            layer.confirm("删除选择的商品分类信息，是否继续？",  {icon: 3, title:'提示'}, function(cindex){
+                // 确定
+
+                var jsonData = {};
+
+                $.each(boxes, function(i, box){
+                    //jsonData.ids[i] = box.value;
+                    //jsonData["ids["+i+"]"] = box.value;
+                    //if ( i != 1 ) {
+                    jsonData["gcs["+i+"].id"] = box.value;
+                    //}
+                });
+
+                var index = 0;
+                $.ajax({
+                    type : "POST",
+                    url  : "${APP_PATH}/goodsCategory/deletes",
+                    data : jsonData,
+                    beforeSend : function() {
+                        index = layer.load(2, {time: 10*1000});
+                    },
+                    success : function(result) {
+                        layer.close(index);
+                        if ( result.success ) {
+                            layer.msg("商品分类信息删除成功", {time:2000, icon:6}, function(){
+                                pageQuery(1);
+                            });
+                        } else {
+                            layer.msg("商品分类信息删除失败", {time:2000, icon:5, shift:6}, function(){
+                            });
+                        }
+                    }
+                });
+                layer.close(cindex);
+            }, function(cindex){
+                // 取消
+                layer.close(cindex);
+            });
+        }
+
+    }
 </script>
 </body>
 </html>

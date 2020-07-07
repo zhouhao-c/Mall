@@ -31,4 +31,21 @@
             #{name},#{remark},#{orderid},#{createtime}
         )
     </insert>
+
+    <update id="updateGoodsCategory">
+        update t_goods_category
+        set name = #{name}, remark = #{remark}, orderid =#{orderid}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsCategoryById">
+        delete from t_goods_category where id=#{id}
+    </delete>
+    
+    <delete id="deleteGoodsCategorys">
+        delete from t_goods_category where id in
+        <foreach collection="gcs" item="gc" open="(" close=")" separator=",">
+            #{gc.id}
+        </foreach>
+    </delete>
 </mapper>

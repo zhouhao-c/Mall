@@ -129,7 +129,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">表单数据<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form id="dataForm" role="form">
                         <div class="form-group">
                             <label for="gcname">名称</label>
                             <input type="text" class="form-control" value="${gc.name}" id="gcname" placeholder="请输入商品分类名称">
@@ -149,7 +149,7 @@
                             </select>
                         </div>
                         <button type="button" class="btn btn-success" id="updateBtn"><i class="glyphicon glyphicon-pencil"></i> 修改</button>
-                        <button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
+                        <button type="button" class="btn btn-danger" id="resetBtn"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
                     </form>
                 </div>
             </div>
@@ -199,6 +199,15 @@
             }
         });
 
+        $("#gcorderid").val("${gc.orderid}");
+
+        $("#resetBtn").click(function () {
+            //jquery[9]=>DOM
+            //$(DOM)=>jquery
+            $("#dataForm")[0].reset();
+            $("#gcorderid").val("${gc.orderid}");
+        });
+
         $("#updateBtn").click(function(){
             var gcname = $("#gcname").val();
             if ( gcname === "" ) {
@@ -224,7 +233,8 @@
                 data : {
                     "name" : gcname,
                     "remark" : gcremark,
-                    "orderid" : $("#gcorderid").val()
+                    "orderid" : $("#gcorderid").val(),
+                    "id" : "${gc.id}"
                 },
                 beforeSend : function() {
                     index = layer.load(2, {time: 10*1000});
@@ -233,7 +243,7 @@
                     layer.close(index);
                     if ( result.success ) { // 业务成功或者失败
                         layer.msg("商品分类信息修改成功", {time:2000, icon:6}, function(){
-                            window.location.href = "${APP_PATH}/goodsCategory/index";
+                            window.location.href = "${APP_PATH}/goodsCategory/index?pageno=${param.pageno}";
                         });
                     } else {
                         layer.msg("商品分类信息修改失败，请重新输入", {time:2000, icon:5, shift:6}, function(){

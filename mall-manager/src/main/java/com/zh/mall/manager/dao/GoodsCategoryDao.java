@@ -1,5 +1,6 @@
 package com.zh.mall.manager.dao;
 
+import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
 
 import java.util.List;
@@ -14,4 +15,10 @@ public interface GoodsCategoryDao {
     void insertGoodsCategory(GoodsCategory gc);
 
     GoodsCategory queryById(Integer id);
+
+    int updateGoodsCategory(GoodsCategory gc);
+
+    int deleteGoodsCategoryById(Integer id);
+
+    int deleteGoodsCategorys(Datas ds);
 }

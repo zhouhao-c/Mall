@@ -1,5 +1,6 @@
 package com.zh.mall.manager.service.impl;
 
+import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
 import com.zh.mall.manager.dao.GoodsCategoryDao;
 import com.zh.mall.manager.service.GoodsCategoryService;
@@ -33,5 +34,20 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public GoodsCategory queryById(Integer id) {
         return goodsCategoryDao.queryById(id);
+    }
+
+    @Override
+    public int updateGoodsCategory(GoodsCategory gc) {
+        return goodsCategoryDao.updateGoodsCategory(gc);
+    }
+
+    @Override
+    public int deleteGoodsCategoryById(Integer id) {
+        return goodsCategoryDao.deleteGoodsCategoryById(id);
+    }
+
+    @Override
+    public int deleteGoodsCategorys(Datas ds) {
+        return goodsCategoryDao.deleteGoodsCategorys(ds);
     }
 }

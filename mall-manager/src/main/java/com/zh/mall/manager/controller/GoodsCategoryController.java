@@ -1,12 +1,11 @@
 package com.zh.mall.manager.controller;
 
 import com.zh.mall.common.bean.AJAXResult;
+import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
 import com.zh.mall.common.bean.Page;
 import com.zh.mall.common.util.StringUtil;
 import com.zh.mall.manager.service.GoodsCategoryService;
-import org.apache.ibatis.annotations.Param;
-import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,72 @@ public class GoodsCategoryController {
     @Autowired
     private GoodsCategoryService goodsCategoryService;
 
+    /**
+     * 批量删除商品分类信息
+     * 将表单中的多条相同类型数据封装到后台的对象集合中
+     * 1） 增加数据包装类，用于获取对象集合
+     * 2) 包装类中增加对象集合属性:ids，并增加对应set/get方法
+     * 3) 表单中传递数据采用特殊方式
+     *    ids[0]=1&ids[1]=2&ids[2]=3
+     * 4) 在方法中增加参数
+     * 5) 不支持泛型
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/deletes")
+    public Object deletes(Datas ds){
+        AJAXResult ajaxResult = new AJAXResult();
+        try {
+            Iterator<GoodsCategory> iter = ds.getGcs().iterator();
+//			while ( iter.hasNext() ) {
+//				GoodsCategory gc = iter.next();
+//				if ( gc.getId() == null ) {
+//					iter.remove();
+//				}
+//			}
+            int cnt = goodsCategoryService.deleteGoodsCategorys(ds);
+            ajaxResult.setSuccess(cnt == ds.getGcs().size());
+            ajaxResult.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+        return ajaxResult;
+    }
+
+    @ResponseBody
+    @RequestMapping("/delete")
+    public Object delete(Integer id){
+        AJAXResult ajaxResult = new AJAXResult();
+
+        try {
+            int cnt = goodsCategoryService.deleteGoodsCategoryById(id);
+            ajaxResult.setSuccess(cnt == 1);
+        }catch (Exception e){
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+        return ajaxResult;
+    }
+
+    @ResponseBody
+    @RequestMapping("/update")
+    public Object update(GoodsCategory gc){
+        AJAXResult ajaxResult = new AJAXResult();
+        try {
+            int cnt = goodsCategoryService.updateGoodsCategory(gc);
+            ajaxResult.setSuccess(cnt == 1);
+        }catch (Exception e){
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+        return ajaxResult;
+    }
+    /**
+     * 插入商品分类数据
+     * @param gc
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/insert")
     public Object insert(GoodsCategory gc){
