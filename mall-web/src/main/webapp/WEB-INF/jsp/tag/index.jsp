@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: hao Zhou
+  Date: 2020/7/7
+  Time: 23:13
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -10,18 +17,15 @@
 
     <link rel="stylesheet" href="${APP_PATH}/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="${APP_PATH}/static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${APP_PATH}/static/css/login.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/main.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/ztree/zTreeStyle.css">
     <style>
         .tree li {
             list-style-type: none;
             cursor:pointer;
         }
-        .tree-closed {
-            height : 40px;
-        }
-        .tree-expanded {
-            height : auto;
-        }
+        table tbody tr:nth-child(odd){background:#F4F4F4;}
+        table tbody td:nth-child(even){color:#C00;}
     </style>
 </head>
 
@@ -30,7 +34,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="#">电商平台 - 控制面板</a></div>
+            <div><a class="navbar-brand" style="font-size:32px;" href="#">电商平台 - 商品分类</a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -44,7 +48,7 @@
                 </li>
             </ul>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="查询">
+                <input type="text" class="form-control" placeholder="Search...">
             </form>
         </div>
     </div>
@@ -86,9 +90,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="list-group-item tree-closed">
+                    <li class="list-group-item">
                         <span><i class="glyphicon glyphicon-th-large"></i> 业务管理 <span class="badge" style="float:right">7</span></span>
-                        <ul style="margin-top:10px;display:none;">
+                        <ul style="margin-top:10px;">
                             <li style="height:30px;">
                                 <a href="cert.html"><i class="glyphicon glyphicon-picture"></i> 资质维护</a>
                             </li>
@@ -105,10 +109,10 @@
                                 <a href="message.html"><i class="glyphicon glyphicon-comment"></i> 消息模板</a>
                             </li>
                             <li style="height:30px;">
-                                <a href="goodsCategory/index"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
+                                <a href="project_type.html" style="color:red;"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
                             </li>
                             <li style="height:30px;">
-                                <a href="tag/index"><i class="glyphicon glyphicon-tags"></i> 商品标签</a>
+                                <a href="tag.html"><i class="glyphicon glyphicon-tags"></i> 商品标签</a>
                             </li>
                         </ul>
                     </li>
@@ -119,36 +123,23 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">控制面板</h1>
-
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
                 </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-                    <h4>Label</h4>
-                    <span class="text-muted">Something else</span>
+                <div class="panel-body">
+                    <ul id="tagTree" class="ztree"></ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="${APP_PATH}/static/jquery/jquery-2.1.1.min.js"></script>
 <script src="${APP_PATH}/static/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/static/script/docs.min.js"></script>
+<script src="${APP_PATH}/static/layer/layer.js"></script>
+<script src="${APP_PATH}/static/ztree/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function(){
@@ -161,8 +152,80 @@
                 }
             }
         });
+
+        var setting = {	};
+
+        /*
+        节点集合中每一个对象的name属性表示节点名称
+        节点集合中每一个对象的open属性表示子节点集合是否展开
+        节点集合中每一个对象的children属性表示子节点集合
+        */
+        /*
+        var zNodes =[
+            { name:"父节点1 - 展开111111", open:true,
+                children: [
+                    { name:"Test - 父节点11 - 折叠",
+                        children: [
+                            { name:"叶子节点111"},
+                            { name:"叶子节点112"},
+                            { name:"叶子节点113"},
+                            { name:"叶子节点114"}
+                        ]},
+                    { name:"父节点11 - 折叠",
+                        children: [
+                            { name:"叶子节点111"},
+                            { name:"叶子节点112"},
+                            { name:"叶子节点113"},
+                            { name:"叶子节点114"}
+                        ]},
+                    { name:"父节点12 - 折叠",
+                        children: [
+                            { name:"叶子节点121"},
+                            { name:"叶子节点122"},
+                            { name:"叶子节点123"},
+                            { name:"叶子节点124"}
+                        ]},
+                    { name:"父节点13 - 没有子节点", isParent:true}
+                ]},
+            { name:"父节点2 - 折叠",
+                children: [
+                    { name:"父节点21 - 展开", open:true,
+                        children: [
+                            { name:"叶子节点211"},
+                            { name:"叶子节点212"},
+                            { name:"叶子节点213"},
+                            { name:"叶子节点214"}
+                        ]},
+                    { name:"父节点22 - 折叠",
+                        children: [
+                            { name:"叶子节点221"},
+                            { name:"叶子节点222"},
+                            { name:"叶子节点223"},
+                            { name:"叶子节点224"}
+                        ]},
+                    { name:"父节点23 - 折叠",
+                        children: [
+                            { name:"叶子节点231"},
+                            { name:"叶子节点232"},
+                            { name:"叶子节点233"},
+                            { name:"叶子节点234"}
+                        ]}
+                ]},
+            { name:"父节点3 - 没有子节点", isParent:true}
+
+        ];
+        */
+        // 动态生成树形数据
+        $.ajax({
+            type : "POST",
+            url  : "${APP_PATH}/tag/loadData",
+            success : function(result) {
+                if ( result.success ) {
+                    $.fn.zTree.init($("#tagTree"), setting, result.data);
+                }
+            }
+        });
     });
 </script>
 </body>
 </html>
-

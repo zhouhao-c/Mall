@@ -108,7 +108,7 @@
                                 <a href="goodsCategory/index"><i class="glyphicon glyphicon-list"></i> 商品分类</a>
                             </li>
                             <li style="height:30px;">
-                                <a href="tag.html"><i class="glyphicon glyphicon-tags"></i> 商品标签</a>
+                                <a href="tag/index"><i class="glyphicon glyphicon-tags"></i> 商品标签</a>
                             </li>
                         </ul>
                     </li>
