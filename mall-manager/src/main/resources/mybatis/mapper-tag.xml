@@ -8,4 +8,8 @@
     <select id="queryChildTagsByPid" resultType="com.zh.mall.common.bean.Tag">
         select * from t_tag where pid = #{pid}
     </select>
+
+    <select id="queryAll" resultType="com.zh.mall.common.bean.Tag">
+        select * from t_tag
+    </select>
 </mapper>

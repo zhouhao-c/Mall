@@ -1,5 +1,6 @@
 package com.zh.mall.manager.controller;
 
+import com.zh.mall.common.BaseController;
 import com.zh.mall.common.bean.AJAXResult;
 import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/goodsCategory")
-public class GoodsCategoryController {
+public class GoodsCategoryController extends BaseController {
 
     @Autowired
     private GoodsCategoryService goodsCategoryService;
@@ -66,16 +67,16 @@ public class GoodsCategoryController {
     @ResponseBody
     @RequestMapping("/delete")
     public Object delete(Integer id){
-        AJAXResult ajaxResult = new AJAXResult();
+        start();
 
         try {
             int cnt = goodsCategoryService.deleteGoodsCategoryById(id);
-            ajaxResult.setSuccess(cnt == 1);
+            success(cnt == 1);
         }catch (Exception e){
             e.printStackTrace();
-            ajaxResult.setSuccess(false);
+            fail();
         }
-        return ajaxResult;
+        return end();
     }
 
     @ResponseBody

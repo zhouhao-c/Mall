@@ -14,6 +14,7 @@ public class Tag {
     private Integer id;
     private Integer pid;
     private String name;
-    private boolean open;
+    private boolean open = true;
+    private String icon;
     private List<Tag> children = new ArrayList<Tag>();
 }

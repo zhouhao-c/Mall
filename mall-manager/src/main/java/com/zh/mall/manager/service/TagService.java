@@ -8,4 +8,6 @@ public interface TagService {
     List<Tag> queryRootTags();
 
     List<Tag> queryChildTagsByPid(Integer id);
+
+    List<Tag> queryAll();
 }

@@ -1,0 +1,27 @@
+package com.zh.mall.common;
+
+import com.zh.mall.common.bean.AJAXResult;
+
+public abstract class BaseController {
+
+    private ThreadLocal<AJAXResult> ajaxResult = new ThreadLocal<AJAXResult>();
+
+    protected void start(){
+        ajaxResult.set(new AJAXResult());
+    }
+    protected Object end(){
+        Object obj = ajaxResult.get();
+        ajaxResult.remove();
+        return obj;
+    }
+    protected void success(){
+        success(true);
+    }
+    protected void success(boolean flg){
+        AJAXResult r = ajaxResult.get();
+        r.setSuccess(flg);
+    }
+    protected void fail(){
+        success(false);
+    }
+}

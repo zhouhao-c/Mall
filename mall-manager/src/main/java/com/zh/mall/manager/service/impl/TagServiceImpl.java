@@ -22,4 +22,9 @@ public class TagServiceImpl implements TagService {
     public List<Tag> queryChildTagsByPid(Integer id) {
         return tagDao.queryChildTagsByPid(id);
     }
+
+    @Override
+    public List<Tag> queryAll() {
+        return tagDao.queryAll();
+    }
 }
