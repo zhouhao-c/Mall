@@ -1,5 +1,6 @@
 package com.zh.mall.portal.controller;
 
+import com.mall.manager.api.service.GoodsCategoryService;
 import com.zh.mall.common.BaseController;
 import com.zh.mall.common.bean.Member;
 import com.zh.mall.common.util.MD5Util;
@@ -17,6 +18,24 @@ public class MemberController extends BaseController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private GoodsCategoryService goodsCategoryService;
+
+    @RequestMapping("/addGoods")
+    public String addGoods(){
+        return "member/addGoods";
+    }
+
+    @RequestMapping("/myshop")
+    public String myshop(){
+        return "member/myshop";
+    }
+
+    /**
+     * 安全退出
+     * @param session
+     * @return
+     */
     @RequestMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
