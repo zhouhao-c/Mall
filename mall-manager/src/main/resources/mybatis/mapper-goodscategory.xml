@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zh.mall.manager.dao.GoodsCategoryDao" >
+    <select id="queryAll" resultType="com.zh.mall.common.bean.GoodsCategory">
+        select * from t_goods_category order by orderid
+    </select>
+
     <select id="queryById" resultType="com.zh.mall.common.bean.GoodsCategory">
         select * from t_goods_category where id=#{id}
     </select>

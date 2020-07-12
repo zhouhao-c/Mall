@@ -4,9 +4,7 @@ import com.mall.manager.api.service.GoodsCategoryService;
 import com.mall.manager.api.service.TagService;
 import com.mall.portal.api.service.MemberService;
 import com.zh.mall.common.BaseController;
-import com.zh.mall.common.bean.GoodsCategory;
-import com.zh.mall.common.bean.Member;
-import com.zh.mall.common.bean.Tag;
+import com.zh.mall.common.bean.*;
 import com.zh.mall.common.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 
 @Controller
@@ -34,8 +30,72 @@ public class MemberController extends BaseController {
     @Autowired
     private TagService tagService;
 
+    @ResponseBody
+    @RequestMapping("/queryMemberGoods")
+    private Object queryMemberGoods(HttpSession session){
+        start();
+        try{
+            Member loginMember = (Member) session.getAttribute("loginMember");
+            List<Goods> goodsDatas = memberService.queryMemberGoods(loginMember);
+            data(goodsDatas);
+            success();
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+
+        return end();
+    }
+
+
+    /**
+     * 发布商品
+     * @return
+     */
     @RequestMapping("/insertGoods")
-    public String insertGoods(HttpServletRequest request) throws Exception{
+    private String insertGoods(Goods goods, SellerInfo sellerInfo,int[] tags,HttpSession session) throws Exception{
+
+        //登录会员信息
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        goods.setMemberid(loginMember.getId());
+        sellerInfo.setMemberid(loginMember.getId());
+
+        sellerInfo.setRemark(goods.getSiremark());
+        sellerInfo.setIntroduce(goods.getIntroduce());
+        sellerInfo.setTel(goods.getTel());
+        sellerInfo.setCstel(goods.getCstel());
+
+        MultipartFile goodsHeadImgFile = goods.getGoodsHeadImgFile();
+        MultipartFile goodsDetailImgFile = goods.getGoodsDetailImgFile();
+
+        ServletContext application = session.getServletContext();
+        String imgSavaPath = application.getRealPath("static/img/goods");
+
+        String headImgFileName = goodsHeadImgFile.getOriginalFilename();
+        String detailImgFileName = goodsDetailImgFile.getOriginalFilename();
+
+        String uuid = UUID.randomUUID().toString();
+        String suffix = headImgFileName.substring(headImgFileName.lastIndexOf("."));
+        String targetFileName = uuid+suffix;
+        File file = new File(imgSavaPath+"/"+targetFileName);
+        //保存宣传图片
+        goodsHeadImgFile.transferTo(file);
+        goods.setIconpath(targetFileName);
+
+        uuid = UUID.randomUUID().toString();
+        suffix = detailImgFileName.substring(detailImgFileName.lastIndexOf("."));
+        targetFileName = uuid+suffix;
+        file = new File(imgSavaPath+"/"+targetFileName);
+        //保存详细图片
+        goodsDetailImgFile.transferTo(file);
+        goods.setIconpathtail(targetFileName);
+
+        memberService.insertGoods(goods,sellerInfo,tags);
+        return "redirect:/member/myshop";
+    }
+
+    @RequestMapping("/insertGoodsTest")
+    public String insertGoodsTest(HttpServletRequest request) throws Exception{
         MultipartHttpServletRequest req = (MultipartHttpServletRequest)request;
         MultipartFile goodsHeadImgFile = req.getFile("goodsHeadImg");
 
@@ -45,8 +105,9 @@ public class MemberController extends BaseController {
 
         //真实文件名称
         String fileName = goodsHeadImgFile.getOriginalFilename();
-        String uuid = UUID.randomUUID().toString();
+
         //UUID.png
+        String uuid = UUID.randomUUID().toString();
         String suffix = fileName.substring(fileName.lastIndexOf("."));
         String targetFileName = uuid+suffix;
         File file = new File(imgSavaPath+"/"+targetFileName);

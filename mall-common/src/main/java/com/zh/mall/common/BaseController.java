@@ -14,6 +14,10 @@ public abstract class BaseController {
         ajaxResult.remove();
         return obj;
     }
+    protected void data(Object data){
+        AJAXResult r = ajaxResult.get();
+        r.setData(data);
+    }
     protected void success(){
         success(true);
     }

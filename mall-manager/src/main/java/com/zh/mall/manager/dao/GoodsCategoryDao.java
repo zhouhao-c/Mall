@@ -21,4 +21,6 @@ public interface GoodsCategoryDao {
     int deleteGoodsCategoryById(Integer id);
 
     int deleteGoodsCategorys(Datas ds);
+
+    List<GoodsCategory> queryAll();
 }

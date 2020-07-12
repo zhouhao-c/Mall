@@ -1,8 +1,8 @@
 package com.zh.mall.manager.service.impl;
 
+import com.mall.manager.api.service.TagService;
 import com.zh.mall.common.bean.Tag;
 import com.zh.mall.manager.dao.TagDao;
-import com.zh.mall.manager.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

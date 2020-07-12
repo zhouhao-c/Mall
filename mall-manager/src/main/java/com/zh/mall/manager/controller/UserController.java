@@ -1,9 +1,9 @@
 package com.zh.mall.manager.controller;
 
+import com.mall.manager.api.service.UserService;
 import com.zh.mall.common.bean.AJAXResult;
 import com.zh.mall.common.bean.User;
 import com.zh.mall.common.util.MD5Util;
-import com.zh.mall.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +30,7 @@ public class UserController {
     public Object doAJAXLogin(User user, HttpSession session){
 
         AJAXResult result = new AJAXResult();
-        user.setPassword(MD5Util.digest(user.getPassword()));
+        user.setUserpswd(MD5Util.digest(user.getUserpswd()));
         User dbUser = userService.queryLoginUser(user);
 
         if(dbUser != null){

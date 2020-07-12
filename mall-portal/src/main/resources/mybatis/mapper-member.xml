@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.mall.portal.dao.MemberDao" >
+    <select id="queryMemberGoods" resultType="com.zh.mall.common.bean.Goods">
+        select * from t_goods where memberid = #{id}
+    </select>
+    <select id="queryMemberByLoginacct" resultType="com.zh.mall.common.bean.Member">
+        select * from t_member where loginacct = #{loginacct}
+    </select>
+    <!-- 插入数据的时候用到自增长的值并放入id属性中   -->
+    <insert id="insertGoods" useGeneratedKeys="true" keyProperty="id">
+        insert into t_goods(
+            name
+            ,memberid
+            ,stock
+            ,price
+            ,iconpath
+            ,iconpathtail
+            ,categoryid
+            ,remark
+        ) values (
+            #{name}
+            ,#{memberid}
+            ,#{stock}
+            ,#{price}
+            ,#{iconpath}
+            ,#{iconpathtail}
+            ,#{categoryid}
+            ,#{remark}
+        )
+
+    </insert>
+    <insert id="insertSellerInfo">
+        insert into t_seller_info (
+            memberid
+            ,introduce
+            ,remark
+            ,tel
+            ,cstel
+        ) values (
+            #{memberid}
+            ,#{introduce}
+            ,#{remark}
+            ,#{tel}
+            ,#{cstel}
+        )
+    </insert>
+    <insert id="insertGoodsTags">
+        insert into t_goods_tag (
+            goodsid,tagid
+        ) values 
+        <foreach collection="gts" item="gt" separator=",">
+        (#{gt.goodsid},#{gt.tagid})
+        </foreach>
+    </insert>
+    <insert id="insertGoodsInfo">
+        insert into t_goods_info (
+            goodsid
+        ) values (
+            #{goodsid}
+        )
+    </insert>
+</mapper>

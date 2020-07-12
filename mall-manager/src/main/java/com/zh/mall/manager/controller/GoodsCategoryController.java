@@ -1,12 +1,12 @@
 package com.zh.mall.manager.controller;
 
+import com.mall.manager.api.service.GoodsCategoryService;
 import com.zh.mall.common.BaseController;
 import com.zh.mall.common.bean.AJAXResult;
 import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
 import com.zh.mall.common.bean.Page;
 import com.zh.mall.common.util.StringUtil;
-import com.zh.mall.manager.service.GoodsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

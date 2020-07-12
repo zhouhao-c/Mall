@@ -1,4 +1,4 @@
-package com.zh.mall.manager.service;
+package com.mall.manager.api.service;
 
 import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
@@ -20,4 +20,6 @@ public interface GoodsCategoryService {
     int deleteGoodsCategoryById(Integer id);
 
     int deleteGoodsCategorys(Datas ds);
+
+    List<GoodsCategory> queryAll();
 }

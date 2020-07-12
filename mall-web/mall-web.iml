@@ -33,7 +33,9 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="module" module-name="mall-manager" />
     <orderEntry type="module" module-name="mall-common" />
+    <orderEntry type="module" module-name="mall-manager-api" />
     <orderEntry type="module" module-name="mall-portal" />
+    <orderEntry type="module" module-name="mall-portal-api" />
     <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet.jsp:jsp-api:2.1.3-b06" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:javax.servlet:3.0-b70" level="project" />

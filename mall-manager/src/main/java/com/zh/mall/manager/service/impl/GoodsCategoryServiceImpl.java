@@ -1,9 +1,9 @@
 package com.zh.mall.manager.service.impl;
 
+import com.mall.manager.api.service.GoodsCategoryService;
 import com.zh.mall.common.bean.Datas;
 import com.zh.mall.common.bean.GoodsCategory;
 import com.zh.mall.manager.dao.GoodsCategoryDao;
-import com.zh.mall.manager.service.GoodsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +49,10 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public int deleteGoodsCategorys(Datas ds) {
         return goodsCategoryDao.deleteGoodsCategorys(ds);
+    }
+
+    @Override
+    public List<GoodsCategory> queryAll() {
+        return goodsCategoryDao.queryAll();
     }
 }

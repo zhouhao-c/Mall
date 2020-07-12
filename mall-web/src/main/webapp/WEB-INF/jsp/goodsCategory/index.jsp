@@ -215,7 +215,7 @@
     });
 
     function pageQuery(pageno) {
-        var jsonData = {"pageno":pageno, "pagesize":3};
+        var jsonData = {"pageno":pageno, "pagesize":9};
         var index = 0;
         if (likeflg === true){
             jsonData.queryText = $("#queryText").val();

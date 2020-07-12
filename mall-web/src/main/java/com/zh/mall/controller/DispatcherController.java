@@ -23,6 +23,11 @@ public class DispatcherController {
         return "main";
     }
 
+    @RequestMapping("/member")
+    public String member(){
+        return "member";
+    }
+
     @RequestMapping("/logout")
     public String logout(HttpSession session){
         //session.removeAttribute("");
