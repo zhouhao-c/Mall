@@ -12,6 +12,10 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class DispatcherController {
+    @RequestMapping(value= {"/index", "", "/", "/index/"})
+    public String index() {
+        return "index";
+    }
 
     @RequestMapping("/login")
     public String login(){

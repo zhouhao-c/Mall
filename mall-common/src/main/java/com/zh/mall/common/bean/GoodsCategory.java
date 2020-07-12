@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 商品分类
  */
@@ -16,4 +19,5 @@ public class GoodsCategory {
     private String remark;
     private Integer orderid;
     private String createtime;
+    private List<Goods> goodsDatas = new ArrayList<Goods>();
 }
