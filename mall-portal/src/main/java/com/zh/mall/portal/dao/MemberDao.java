@@ -18,5 +18,15 @@ public interface MemberDao {
 
     List<Goods> queryMemberGoods(Member loginMember);
 
-    void insertFavGoods(FavGoods fg, GoodsInfo info);
+    void insertFavGoods(FavGoods fg);
+
+    void updateGoodsInfoFavcnt(GoodsInfo info);
+
+    Cart queryCart(Cart c);
+
+    void insertCart(Cart c);
+
+    void updateCart(Cart cart);
+
+    List<Cart> queryCartsByMemberid(Integer id);
 }

@@ -12,4 +12,14 @@ public interface MemberService {
     List<Goods> queryMemberGoods(Member loginMember);
 
     void insertFavGoods(FavGoods fg, GoodsInfo info);
+
+    Cart queryCart(Cart c);
+
+    void insertCart(Cart c);
+
+    void updateCart(Cart cart);
+
+    void updateGoodsInfoFavcnt(GoodsInfo gi);
+
+    List<Cart> queryCartsByMemberid(Integer id);
 }

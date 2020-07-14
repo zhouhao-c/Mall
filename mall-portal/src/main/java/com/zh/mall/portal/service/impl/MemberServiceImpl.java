@@ -45,6 +45,32 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void insertFavGoods(FavGoods fg, GoodsInfo info) {
-        memberDao.insertFavGoods(fg,info);
+        memberDao.insertFavGoods(fg);
+        memberDao.updateGoodsInfoFavcnt(info);
+    }
+
+    @Override
+    public Cart queryCart(Cart c) {
+        return memberDao.queryCart(c);
+    }
+
+    @Override
+    public void insertCart(Cart c) {
+        memberDao.insertCart(c);
+    }
+
+    @Override
+    public void updateCart(Cart cart) {
+        memberDao.updateCart(cart);
+    }
+
+    @Override
+    public void updateGoodsInfoFavcnt(GoodsInfo gi) {
+        memberDao.updateGoodsInfoFavcnt(gi);
+    }
+
+    @Override
+    public List<Cart> queryCartsByMemberid(Integer id) {
+        return memberDao.queryCartsByMemberid(id);
     }
 }

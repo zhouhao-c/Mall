@@ -19,6 +19,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -32,6 +35,79 @@ public class MemberController extends BaseController {
     private TagService tagService;
     @Autowired
     private GoodsService goodsService;
+
+    @ResponseBody
+    @RequestMapping("/carts")
+    public Object carts( HttpSession session ) {
+        start();
+
+        try {
+            Member loginMember = (Member)session.getAttribute("loginMember");
+            List<Cart> carts = memberService.queryCartsByMemberid(loginMember.getId());
+            data(carts);
+            success();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            fail();
+        }
+
+        return end();
+    }
+
+    /**
+     * 购物车页面跳转
+     * @return
+     */
+    @RequestMapping("/cart")
+    public String cart() {
+        return "member/cart";
+    }
+
+    /**
+     * 将商品加入购物车
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addGoodsIntoCart")
+    public Object addGoodsIntoCart(HttpSession session, Integer price, Integer goodsid, Integer cnt) {
+        start();
+
+        try {
+
+            Member loginMember = (Member)session.getAttribute("loginMember");
+            String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            // 查询是否曾经买过商品
+            Cart c = new Cart();
+            c.setMemberid(loginMember.getId());
+            c.setGoodsid(goodsid);
+            Cart cart = memberService.queryCart(c);
+
+            if ( cart == null ) {
+                // 没买
+                c.setNum(cnt);
+                c.setPrice(price);
+                c.setJointime(date);
+
+                memberService.insertCart(c);
+            } else {
+                // 买过
+                cart.setNum(cart.getNum() + cnt);
+                GoodsInfo gi = goodsService.queryGoodsInfoById(goodsid);
+                gi.setFavcnt(gi.getFavcnt()-cnt);
+                memberService.updateGoodsInfoFavcnt(gi);
+                memberService.updateCart(cart);
+
+            }
+
+            success();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            fail();
+        }
+
+        return end();
+    }
 
     /**
      * 商品收藏功能
@@ -49,8 +125,13 @@ public class MemberController extends BaseController {
             Member loginMember = (Member)session.getAttribute("loginMember");
             // 增加
             FavGoods fg = new FavGoods();
-            fg.setGoodsid(goodsid);
-            fg.setMemberid(loginMember.getId());
+            if (loginMember != null){
+                fg.setGoodsid(goodsid);
+                fg.setMemberid(loginMember.getId());
+            }else {
+                fail();
+                return end();
+            }
 
             GoodsInfo info = goodsService.queryGoodsInfoById(goodsid);
             if ( info.getFavcnt() == null ) {

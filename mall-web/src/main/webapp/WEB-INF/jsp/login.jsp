@@ -44,8 +44,9 @@
         </div>
         <div class="form-group has-success has-feedback">
             <select id="userType" class="form-control" >
-                <option value="member">会员</option>
-                <option value="user">管理</option>
+                <option value="index">首页</option>
+                <option value="user">管理中心</option>
+                <option value="member">会员中心</option>
             </select>
         </div>
         <p>${param.errorMsg}</p>
@@ -92,9 +93,12 @@
         if (userType === 'user'){
             loginUrl = "${APP_PATH}/user/doAJAXLogin";
             targetUrl = "${APP_PATH}/main";
-        }else {
-            loginUrl = "${APP_PATH}/member/doAJAXLogin"
+        }else if(userType === 'member'){
+            loginUrl = "${APP_PATH}/member/doAJAXLogin";
             targetUrl = "${APP_PATH}/member";
+        }else {
+            loginUrl = "${APP_PATH}/member/doAJAXLogin";
+            targetUrl = "${APP_PATH}/index";
         }
         // AJAX执行登录
         var index = 0;

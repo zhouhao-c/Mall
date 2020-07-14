@@ -104,18 +104,22 @@
 <div class="navbar-wrapper">
     <div class="container">
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-<%--            <div class="container">--%>
-<%--                <div class="navbar-header">--%>
-<%--                    <a class="navbar-brand" href="javascript:;" style="font-size:32px;">产品购物平台</a>--%>
-<%--                </div>--%>
-<%--                <div id="navbar" class="navbar-collapse collapse" style="float:right;">--%>
-<%--                    <ul class="nav navbar-nav navbar-right">--%>
-<%--                        <li><a href="login.html">登录</a></li>--%>
-<%--                        <li><a href="reg.html">注册</a></li>--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-        <%@include file="/WEB-INF/jsp/common/memberNavInfo.jsp"%>
+            <c:if test="${loginMember.id == null}">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="javascript:;" style="font-size:32px;">产品购物平台</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse" style="float:right;">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="${APP_PATH}/login">登录</a></li>
+                            <li><a href="">注册</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${loginMember.id != null}">
+                <%@include file="/WEB-INF/jsp/common/memberNavInfo.jsp"%>
+            </c:if>
         </nav>
 
     </div>
@@ -205,7 +209,7 @@
                                                     <a href="${APP_PATH}/goods/detail/${goods.id}">${goods.name}</a>
                                                 </h3>
                                                 <div style="padding:10px;"><span style="float:right;"><i goodsid="${goods.id}" class="glyphicon glyphicon-star-empty" ></i></span>  <span ><font color="red"><b><i class="glyphicon glyphicon-yen" title="价格"></i> ${goods.price}</b></font></span> </div>
-                                                <div><button class="btn btn-danger"><i class="glyphicon glyphicon-gift"></i> 我要兑换</button><button class="btn btn-success" style="float:right;"onclick="window.location.href='${APP_PATH}/goods/detail/${goods.id}'"><i class="glyphicon glyphicon-shopping-cart"></i> 我要购买</button></div>
+                                                <div><button class="btn btn-danger"><i class="glyphicon glyphicon-gift"></i> 我要兑换</button><button id="testBtn" disabled="disabled" class="btn btn-success" style="float:right;"onclick="window.location.href='${APP_PATH}/goods/detail/${goods.id}'"><i class="glyphicon glyphicon-shopping-cart"></i> 我要购买</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -244,11 +248,19 @@
 <script src="${APP_PATH}/static/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/static/script/docs.min.js"></script>
 <script src="${APP_PATH}/static/script/back-to-top.js"></script>
+<script src="${APP_PATH}/static/layer/layer.js"></script>
 <script>
     $(".thumbnail img").css("cursor", "pointer");
     $(".thumbnail img").click(function(){
         window.location.href = "project.html";
     });
+
+    var loginMember="<%=session.getAttribute("loginMember")%>";
+    if (loginMember == "null"){
+        $("#testBtn").attr("disabled",true);
+    }else {
+        $("#testBtn").attr("disabled",false);
+    }
 
     $(".glyphicon-star-empty").click(function(){
         that = this;
@@ -258,8 +270,17 @@
             data : {
                 "goodsid" : $(that).attr("goodsid")
             },
-            success : function() {
-                $(that).addClass("favgoods");
+            success : function(result) {
+                if (result.success){
+                    layer.msg("商品收藏成功",{time:1000,icon:1,shift:3},function () {
+                        //回调方法，消息关闭后执行逻辑
+                    });
+                    $(that).addClass("favgoods");
+                }else {
+                    layer.msg("商品收藏失败,请先登录",{time:1000,icon:2,shift:3},function () {
+                        //回调方法，消息关闭后执行逻辑
+                    });
+                }
             }
         });
     });
