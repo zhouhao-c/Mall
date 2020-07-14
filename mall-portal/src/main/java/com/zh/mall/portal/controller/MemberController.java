@@ -2,6 +2,7 @@ package com.zh.mall.portal.controller;
 
 import com.mall.manager.api.service.GoodsCategoryService;
 import com.mall.manager.api.service.TagService;
+import com.mall.portal.api.service.GoodsService;
 import com.mall.portal.api.service.MemberService;
 import com.zh.mall.common.BaseController;
 import com.zh.mall.common.bean.*;
@@ -29,7 +30,50 @@ public class MemberController extends BaseController {
     private GoodsCategoryService goodsCategoryService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private GoodsService goodsService;
 
+    /**
+     * 商品收藏功能
+     * @param goodsid
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addFav")
+    public Object addFav( Integer goodsid, HttpSession session ) {
+        start();
+
+        try {
+
+            Member loginMember = (Member)session.getAttribute("loginMember");
+            // 增加
+            FavGoods fg = new FavGoods();
+            fg.setGoodsid(goodsid);
+            fg.setMemberid(loginMember.getId());
+
+            GoodsInfo info = goodsService.queryGoodsInfoById(goodsid);
+            if ( info.getFavcnt() == null ) {
+                info.setFavcnt(1);
+            } else {
+                info.setFavcnt(info.getFavcnt() + 1);
+            }
+
+            memberService.insertFavGoods(fg, info);
+
+            success();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            fail();
+        }
+
+        return end();
+    }
+
+    /**
+     * 查询我的商品
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/queryMemberGoods")
     private Object queryMemberGoods(HttpSession session){

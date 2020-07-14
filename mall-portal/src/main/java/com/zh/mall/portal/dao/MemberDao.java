@@ -17,4 +17,6 @@ public interface MemberDao {
     void insertGoodsInfo(GoodsInfo goodsInfo);
 
     List<Goods> queryMemberGoods(Member loginMember);
+
+    void insertFavGoods(FavGoods fg, GoodsInfo info);
 }

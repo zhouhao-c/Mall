@@ -60,4 +60,8 @@
             #{goodsid}
         )
     </insert>
+    <insert id="insertFavGoods">
+        insert into t_fav_goods (memberid, goodsid)
+        values ( #{memberid}, #{goodsid} )
+    </insert>
 </mapper>

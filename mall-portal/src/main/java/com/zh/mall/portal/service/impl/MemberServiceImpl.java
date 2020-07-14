@@ -42,4 +42,9 @@ public class MemberServiceImpl implements MemberService {
     public List<Goods> queryMemberGoods(Member loginMember) {
         return memberDao.queryMemberGoods(loginMember);
     }
+
+    @Override
+    public void insertFavGoods(FavGoods fg, GoodsInfo info) {
+        memberDao.insertFavGoods(fg,info);
+    }
 }

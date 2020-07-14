@@ -104,17 +104,18 @@
 <div class="navbar-wrapper">
     <div class="container">
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="javascript:;" style="font-size:32px;">产品购物平台</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse" style="float:right;">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="login.html">登录</a></li>
-                        <li><a href="reg.html">注册</a></li>
-                    </ul>
-                </div>
-            </div>
+<%--            <div class="container">--%>
+<%--                <div class="navbar-header">--%>
+<%--                    <a class="navbar-brand" href="javascript:;" style="font-size:32px;">产品购物平台</a>--%>
+<%--                </div>--%>
+<%--                <div id="navbar" class="navbar-collapse collapse" style="float:right;">--%>
+<%--                    <ul class="nav navbar-nav navbar-right">--%>
+<%--                        <li><a href="login.html">登录</a></li>--%>
+<%--                        <li><a href="reg.html">注册</a></li>--%>
+<%--                    </ul>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+        <%@include file="/WEB-INF/jsp/common/memberNavInfo.jsp"%>
         </nav>
 
     </div>
