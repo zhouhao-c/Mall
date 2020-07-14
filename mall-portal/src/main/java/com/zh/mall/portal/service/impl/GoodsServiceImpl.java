@@ -17,4 +17,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Goods> queryAll() {
         return goodsDao.queryAll();
     }
+
+    @Override
+    public Goods queryById(Integer goodsid) {
+        return goodsDao.queryById(goodsid);
+    }
 }

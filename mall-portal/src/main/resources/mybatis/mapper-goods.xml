@@ -4,4 +4,37 @@
     <select id="queryAll" resultType="com.zh.mall.common.bean.Goods">
         select * from t_goods
     </select>
+    <select id="queryGoodsInfoById" resultType="com.zh.mall.common.bean.GoodsInfo">
+        select * from t_goods_info where goodsid = #{goodsid}
+    </select>
+    <select id="queryById" resultType="com.zh.mall.common.bean.Goods" resultMap="goodsResultMap">
+        select
+            g.*,
+            gi.favcnt as favcnt,
+            si.introduce as introduce,
+            si.remark as siremark,
+            si.tel as sitel,
+            si.cstel as cstel
+        from t_goods g
+        join t_goods_info gi on g.id = gi.goodsid
+        join t_seller_info si on g.memberid = si.memberid
+        where g.id = #{id}
+    </select>
+    <!-- 映射关联   -->
+    <resultMap id="goodsResultMap" type="com.zh.mall.common.bean.Goods">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="remark" column="remark"></result>
+        <result property="price" column="price"></result>
+        <result property="stock" column="stock"></result>
+        <result property="iconpathtail" column="iconpathtail"></result>
+        <association property="goodsInfo" javaType="com.zh.mall.common.bean.GoodsInfo">
+            <result property="favcnt" column="favcnt"/>
+        </association>
+        <association property="sellerInfo" javaType="com.zh.mall.common.bean.SellerInfo">
+            <result property="introduce" column="introduce"/>
+            <result property="remark" column="siremark"/>
+            <result property="cstel" column="cstel"/>
+        </association>
+    </resultMap>
 </mapper>

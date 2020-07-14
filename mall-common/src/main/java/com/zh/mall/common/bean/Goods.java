@@ -36,4 +36,6 @@ public class Goods {
     private String siremark;
     private String tel;
     private String cstel;
+    private GoodsInfo goodsInfo;
+    private SellerInfo sellerInfo;
 }
