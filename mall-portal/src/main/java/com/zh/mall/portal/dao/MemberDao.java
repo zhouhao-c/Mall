@@ -29,4 +29,12 @@ public interface MemberDao {
     void updateCart(Cart cart);
 
     List<Cart> queryCartsByMemberid(Integer id);
+
+    void insertOrder(Order order);
+
+    void insertOrderItems(@Param("items") List<OrderItem> items);
+
+    void deleteCarts(Order order);
+
+    int queryCartCount(Integer id);
 }

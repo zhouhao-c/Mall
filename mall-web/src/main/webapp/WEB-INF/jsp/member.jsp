@@ -82,10 +82,10 @@
                 <div class="list-group-item " style="cursor:pointer;" onclick="window.location.href='${APP_PATH}/member/myshop'">
                     我的店铺<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
                 </div>
-                <div class="list-group-item " style="cursor:pointer;" onclick="window.location.href='mycart.html'">
+                <div class="list-group-item " style="cursor:pointer;" onclick="window.location.href='${APP_PATH}/member/cart'">
                     我的购物车<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
                 </div>
-                <div class="list-group-item " style="cursor:pointer;" onclick="window.location.href='myorder.html'">
+                <div class="list-group-item " style="cursor:pointer;" onclick="window.location.href='${APP_PATH}/member/myorder'">
                     我的订单<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
                 </div>
             </div>

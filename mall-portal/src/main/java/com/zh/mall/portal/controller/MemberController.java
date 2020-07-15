@@ -36,6 +36,52 @@ public class MemberController extends BaseController {
     @Autowired
     private GoodsService goodsService;
 
+    /**
+     * 下订单
+     * @return
+     */
+    @RequestMapping("/doOrder")
+    public String doOrder( HttpSession session ) {
+
+        Member loginMember = (Member)session.getAttribute("loginMember");
+
+        List<Cart> carts = memberService.queryCartsByMemberid(loginMember.getId());
+        int totalprice = 0;
+        List<OrderItem> items = new ArrayList<OrderItem>();
+        for ( Cart cart : carts ) {
+            totalprice += cart.getNum() * cart.getPrice();
+            OrderItem item = new OrderItem();
+            item.setNum(cart.getNum());
+            item.setPrice(cart.getPrice());
+            item.setGoodsid(cart.getGoodsid());
+            items.add(item);
+        }
+
+        Order order = new Order();
+        order.setMemberid(loginMember.getId());
+        order.setCreatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        order.setStatus("00");
+        order.setPrice(totalprice);
+
+        memberService.insertOrder(order, items);
+
+        return "redirect:/member/myorder";
+    }
+
+    @RequestMapping("/checkOrder")
+    public String checkOrder() {
+        return "member/checkOrder";
+    }
+
+    /**
+     * 跳转我的订单
+     * @return
+     */
+    @RequestMapping("/myorder")
+    public String myorder() {
+        return "member/myorder";
+    }
+
     @ResponseBody
     @RequestMapping("/carts")
     public Object carts( HttpSession session ) {
@@ -297,12 +343,14 @@ public class MemberController extends BaseController {
             //102：密码错误
             //103：权限
             Member dbmember = memberService.queryMemberByLoginacct(loginacct);
+            int cartCnt = memberService.queryCartCount(dbmember.getId());
             if (dbmember == null){
                 data(101);
                 fail();
             }else {
                 if (dbmember.getMemberpswd().equals(MD5Util.digest(userpswd))){
                     session.setAttribute("loginMember",dbmember);
+                    session.setAttribute("cartCnt",cartCnt);
                     success();
                 }else {
                     data(102);

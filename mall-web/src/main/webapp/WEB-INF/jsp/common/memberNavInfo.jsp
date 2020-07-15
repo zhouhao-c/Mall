@@ -21,7 +21,7 @@
                     <li><a href="${APP_PATH}/member/logout"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
                 </ul>
             </li>
-            <li><a href="mycart.html"><i class="glyphicon glyphicon-shopping-cart"></i> 购物车<span class="label label-danger">42</span></a></li>
+            <li><a href="${APP_PATH}/member/cart"><i class="glyphicon glyphicon-shopping-cart"></i> 购物车<span class="label label-danger">${cartCnt}</span></a></li>
         </ul>
     </div>
 </div>

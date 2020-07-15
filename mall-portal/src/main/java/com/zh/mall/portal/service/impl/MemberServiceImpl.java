@@ -73,4 +73,21 @@ public class MemberServiceImpl implements MemberService {
     public List<Cart> queryCartsByMemberid(Integer id) {
         return memberDao.queryCartsByMemberid(id);
     }
+
+    @Override
+    public void insertOrder(Order order, List<OrderItem> items) {
+        memberDao.insertOrder(order);
+
+        for ( OrderItem item : items ) {
+            item.setOrderid(order.getId());
+        }
+        memberDao.insertOrderItems(items);
+
+        memberDao.deleteCarts(order);
+    }
+
+    @Override
+    public int queryCartCount(Integer id) {
+        return memberDao.queryCartCount(id);
+    }
 }

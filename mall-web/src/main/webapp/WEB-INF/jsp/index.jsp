@@ -98,6 +98,9 @@
         .favgoods.glyphicon-star-empty {
             color:blue;
         }
+        .testBtn{
+
+        }
     </style>
 </head>
 <body>
@@ -209,7 +212,7 @@
                                                     <a href="${APP_PATH}/goods/detail/${goods.id}">${goods.name}</a>
                                                 </h3>
                                                 <div style="padding:10px;"><span style="float:right;"><i goodsid="${goods.id}" class="glyphicon glyphicon-star-empty" ></i></span>  <span ><font color="red"><b><i class="glyphicon glyphicon-yen" title="价格"></i> ${goods.price}</b></font></span> </div>
-                                                <div><button class="btn btn-danger"><i class="glyphicon glyphicon-gift"></i> 我要兑换</button><button id="testBtn" disabled="disabled" class="btn btn-success" style="float:right;"onclick="window.location.href='${APP_PATH}/goods/detail/${goods.id}'"><i class="glyphicon glyphicon-shopping-cart"></i> 我要购买</button></div>
+                                                <div><button class="btn btn-danger"><i class="glyphicon glyphicon-gift"></i> 我要兑换</button><button class="btn btn-success" style="float:right;"onclick="if (${loginMember.id != null}){window.location.href='${APP_PATH}/goods/detail/${goods.id}'}"><i class="glyphicon glyphicon-shopping-cart"></i> 我要购买</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -255,14 +258,18 @@
         window.location.href = "project.html";
     });
 
-    var loginMember="<%=session.getAttribute("loginMember")%>";
-    if (loginMember == "null"){
-        $("#testBtn").attr("disabled",true);
-    }else {
-        $("#testBtn").attr("disabled",false);
-    }
+    <%--var loginMember="<%=session.getAttribute("loginMember")%>";--%>
+
+    // if (loginMember == "null"){
+    //     $("#testBtn2").attr("disabled",true);
+    //     $("#testBtn1").attr("disabled",true);
+    // }else {
+    //     $("#testBtn2").attr("disabled",false);
+    //     $("#testBtn1").attr("disabled",false);
+    // }
 
     $(".glyphicon-star-empty").click(function(){
+
         that = this;
         $.ajax({
             type : "POST",

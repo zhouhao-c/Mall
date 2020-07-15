@@ -22,4 +22,8 @@ public interface MemberService {
     void updateGoodsInfoFavcnt(GoodsInfo gi);
 
     List<Cart> queryCartsByMemberid(Integer id);
+
+    void insertOrder(Order order, List<OrderItem> items);
+
+    int queryCartCount(Integer id);
 }
